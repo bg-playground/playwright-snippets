@@ -12,6 +12,7 @@ Star if a snippet saved you a debugging hour.
 | [snippets/locators-resilient.spec.ts](snippets/locators-resilient.spec.ts) | Role, label, and text locators instead of CSS that breaks on a class rename |
 | [snippets/network-mock.spec.ts](snippets/network-mock.spec.ts) | Stub an API, assert the request, wait for the real response |
 | [snippets/accessibility-axe.spec.ts](snippets/accessibility-axe.spec.ts) | WCAG 2.1 A/AA scan with axe, scoped to `#main`, known issues excluded |
+| [snippets/color-contrast.spec.ts](snippets/color-contrast.spec.ts) | Color contrast only, so a 4.03 ratio is not buried in a full scan |
 | [snippets/visual-mask.spec.ts](snippets/visual-mask.spec.ts) | Screenshot diff that ignores ads, avatars, and timestamps |
 | [snippets/fixtures-role.spec.ts](snippets/fixtures-role.spec.ts) | A fixture that hands every test an authenticated page and a preconfigured axe builder |
 
