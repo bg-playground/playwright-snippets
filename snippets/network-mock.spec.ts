@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 
-test('stub a slow API and assert the request body', async ({ page }) => {
+test('stub an order API and assert the POST body', async ({ page }) => {
   await page.route('**/api/orders', async (route) => {
+    if (route.request().method() !== 'POST') return route.continue();
     const body = route.request().postDataJSON() as { sku: string };
     expect(body.sku).toBe('WIDGET-1');
     await route.fulfill({
@@ -25,5 +26,6 @@ test('wait for the real response before asserting the UI', async ({ page }) => {
   await page.getByRole('button', { name: 'Refresh' }).click();
   const response = await responsePromise;
   expect(response.ok()).toBeTruthy();
-  await expect(page.getByRole('row')).toHaveCount(3);
+  // Scope to the body so the column-header row is not counted.
+  await expect(page.locator('tbody').getByRole('row')).toHaveCount(3);
 });
