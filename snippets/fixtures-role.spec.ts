@@ -7,17 +7,21 @@ type Fixtures = {
 };
 
 export const test = base.extend<Fixtures>({
-  authedPage: async ({ browser }, use) => {
+  authedPage: async ({ browser, baseURL }, use) => {
     const context = await browser.newContext({
+      baseURL,
       storageState: 'playwright/.auth/user.json',
     });
     const page = await context.newPage();
-    await use(page);
-    await context.close();
+    try {
+      await use(page);
+    } finally {
+      await context.close();
+    }
   },
-  makeAxeBuilder: async ({ page }, use) => {
+  makeAxeBuilder: async ({ authedPage }, use) => {
     const makeAxeBuilder = () =>
-      new AxeBuilder({ page })
+      new AxeBuilder({ page: authedPage })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
         .include('#main');
     await use(makeAxeBuilder);
@@ -30,5 +34,5 @@ test('dashboard scan uses the shared axe fixture', async ({ authedPage, makeAxeB
   const blocking = results.violations.filter(
     (violation) => violation.impact === 'serious' || violation.impact === 'critical',
   );
-  expect(blocking).toEqual([]);
+  expect(blocking, JSON.stringify(blocking, null, 2)).toEqual([]);
 });
